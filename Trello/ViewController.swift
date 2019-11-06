@@ -7,13 +7,20 @@
 //
 
 import Cocoa
+import WebKit
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, WKUIDelegate {
+
+    @IBOutlet weak var webView: WKWebView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        guard let url = URL(string: "https://trello.com") else {
+            return
+        }
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 
     override var representedObject: Any? {
@@ -21,7 +28,4 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
-
-
 }
-
