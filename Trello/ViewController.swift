@@ -15,6 +15,7 @@ class ViewController: NSViewController, WKUIDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView.uiDelegate = self
 
         guard let url = URL(string: "https://trello.com") else {
             return
@@ -26,6 +27,20 @@ class ViewController: NSViewController, WKUIDelegate {
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
+        }
+    }
+
+    func webView(_ webView: WKWebView, runOpenPanelWith parameters: WKOpenPanelParameters, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping ([URL]?) -> Void) {
+        let openPanel = NSOpenPanel()
+        openPanel.canChooseFiles = true
+        openPanel.begin { (result) in
+            if result == NSApplication.ModalResponse.OK {
+                if let url = openPanel.url {
+                    completionHandler([url])
+                }
+            } else if result == NSApplication.ModalResponse.cancel {
+                completionHandler(nil)
+            }
         }
     }
 }
